@@ -54,6 +54,9 @@
 		-->
 
 		<main>
+			{% if logged_in %}
+			<strong>Hello, {{ session.firstname }}</strong>
+			{% endif %}
             {% block main%}{% endblock %}
         </main>
 

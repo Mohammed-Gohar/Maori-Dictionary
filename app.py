@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 from datetime import datetime
 
 app = Flask(__name__)
-DATABASE = "smile.db"
+DATABASE = "dictionary.db"
 app.secret_key = "s34de5f7r6g77hu78"
 bcrypt = Bcrypt(app)
 def create_connection(db_file):
@@ -51,7 +51,7 @@ def render_login():
         session['firstname'] = firstname
         print(session)
         return redirect('/')
-    return render_template('login.html')
+    return render_template('login.html', logged_in=is_logged_in())
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -77,7 +77,7 @@ def render_signup():
 
         con = create_connection(DATABASE)
 
-        query = "INSERT INTO customer(id, fname, lname, email, password) VALUES(NULL,?,?,?,?)"
+        query = "INSERT INTO customer (id, fname, lname, email, password) VALUES(NULL,?,?,?,?)"
 
         cur = con.cursor()
         try:
@@ -89,4 +89,22 @@ def render_signup():
         con.close()
         return redirect('/login')
 
-    return render_template('signup.html')
+    return render_template('signup.html', logged_in=is_logged_in())
+
+@app.route('/logout')
+def logout():
+    print(list(session.keys()))
+    [session.pop(key) for key in list(session.keys())]
+    print(list(session.keys()))
+    return redirect('/?message=See+you+next+time!')
+
+
+def is_logged_in():
+    if session.get("email") is None:
+        print("not logged in")
+        return False
+    else:
+        print("logged in")
+        return True
+
+app.run(host="0.0.0.0", debug=True)
