@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 from datetime import datetime
 
 app = Flask(__name__)
-DATABASE = "dictionary.db"
+DATABASE = "identifier.sqlite"
 app.secret_key = "s34de5f7r6g77hu78"
 bcrypt = Bcrypt(app)
 def create_connection(db_file):
@@ -107,4 +107,5 @@ def is_logged_in():
         print("logged in")
         return True
 
-app.run(host="0.0.0.0", debug=True)
+if __name__ == '__main__':
+    app.run()
