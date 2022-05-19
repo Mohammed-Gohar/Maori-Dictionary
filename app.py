@@ -16,9 +16,19 @@ def create_connection(db_file):
         print(e)
     return None
 
+def categories():
+    query = "SELECT id, category_name FROM categories"
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    cur.execute(query)
+    category_list = cur.fetchall()
+    con.close()
+    return category_list
+
 @app.route('/')
 def hello_world():
-    return render_template('home.html')
+    print(categories())
+    return render_template('home.html', categories=categories())
 
 @app.route('/login', methods=['GET', 'POST'])
 def render_login():
