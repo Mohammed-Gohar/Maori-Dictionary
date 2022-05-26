@@ -8,6 +8,8 @@ app = Flask(__name__)
 DATABASE = "identifier.sqlite"
 app.secret_key = "s34de5f7r6g77hu78"
 bcrypt = Bcrypt(app)
+
+
 def create_connection(db_file):
     try:
         connection = sqlite3.connect(db_file)
@@ -15,6 +17,7 @@ def create_connection(db_file):
     except Error as e:
         print(e)
     return None
+
 
 def categories():
     query = "SELECT id, category_name FROM categories"
@@ -25,10 +28,23 @@ def categories():
     con.close()
     return category_list
 
+
+def vocab():
+    query = "SELECT * FROM vocab"
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    cur.execute(query)
+    vocab_list = cur.fetchall()
+    con.close()
+    return vocab_list
+
+
 @app.route('/')
 def hello_world():
     print(categories())
-    return render_template('home.html', categories=categories())
+    print(vocab())
+    return render_template('home.html', categories=categories(), logged_in=is_logged_in())
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def render_login():
@@ -101,6 +117,7 @@ def render_signup():
 
     return render_template('signup.html', logged_in=is_logged_in())
 
+
 @app.route('/logout')
 def logout():
     print(list(session.keys()))
@@ -116,6 +133,16 @@ def is_logged_in():
     else:
         print("logged in")
         return True
+
+
+@app.route('/category/<cat_id>')
+def render_list(cat_id):
+    return render_template('category.html', categories=categories(), vocab_list=vocab(), cat_id=int(cat_id)
+                           , logged_in=is_logged_in())
+
+@app.route('/word/<word_id>')
+def render_word():
+    return render_template('word.html', categories=categories(), vocab_list=vocab(), logged_in=is_logged_in())
 
 if __name__ == '__main__':
     app.run()

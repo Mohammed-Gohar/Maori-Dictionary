@@ -8,14 +8,16 @@
             <th>Date added</th>
         </tr>
          <tbody>
-            {% for content in contents %}
-                {% if content[3] == cat_id %}
+            {% for vocab in vocab_list %}
+                {% if vocab[3] == cat_id %}
                     <tr>
-                        <td><a href="/word/{{ content[0] }}">{{ content[1] }}</a></td>
-                        <td>{{ content[2] }}</td>
-                        <td>{{ content[7] }}</td>
+                        <td><a href="/word/{{ vocab[0] }}">{{ vocab[1] }}</td>
+                        <td>{{ vocab[2] }}</td>
+                        <td>{{ vocab[7] }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+

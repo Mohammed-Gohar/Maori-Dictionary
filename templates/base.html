@@ -34,8 +34,11 @@
 				</div>
 
 
-
-            	<a href="/login">login</a>
+				{% if logged_in %}
+					<a href="/logout">logout</a>
+				{% else %}
+            		<a href="/login">login</a>
+				{% endif %}
 
 			</ul>
 		</nav>
@@ -48,9 +51,6 @@
 		-->
 
 		<main>
-			{% if logged_in %}
-			<strong>Hello, {{ session.firstname }}</strong>
-			{% endif %}
             {% block main%}{% endblock %}
         </main>
 
