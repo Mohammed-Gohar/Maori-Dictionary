@@ -141,8 +141,9 @@ def render_list(cat_id):
                            , logged_in=is_logged_in())
 
 @app.route('/word/<word_id>')
-def render_word():
-    return render_template('word.html', categories=categories(), vocab_list=vocab(), logged_in=is_logged_in())
+def render_word(word_id):
+    return render_template('word.html', categories=categories(), vocab_list=vocab(), word_id=int(word_id),
+                           logged_in=is_logged_in())
 
 if __name__ == '__main__':
     app.run()

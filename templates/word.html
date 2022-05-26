@@ -5,16 +5,24 @@
         <tr>
             <th>Maori</th>
             <th>English</th>
-            <th>Date added</th>
             <th>Definition</th>
             <th>Level</th>
+            <th>Date added</th>
+            <th>Image</th>
         </tr>
          <tbody>
-
+            {% for vocab in vocab_list %}
+                {% if vocab[0] == word_id %}
                     <tr>
-
+                        <td>{{ vocab[1] }}</td>
+                        <td>{{ vocab[2] }}</td>
+                        <td>{{ vocab[4] }}</td>
+                        <td>{{ vocab[5] }}</td>
+                        <td>{{ vocab[7] }}</td>
+                        <td><img src="/static/images/{{ vocab[6] }}" alt="" ></td>
                     </tr>
-
+                {% endif %}
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
