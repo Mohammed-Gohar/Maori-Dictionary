@@ -41,21 +41,25 @@ def vocab():
 
 @app.route('/')
 def hello_world():
-    print(categories())
-    print(vocab())
+    print(is_teacher())
+    print(f"line 45 session {session}")
+
     return render_template('home.html', categories=categories(), logged_in=is_logged_in())
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def render_login():
+    print(request.form, request.method)
     if is_logged_in():
         return redirect('/')
 
     if request.method == "POST":
+        print("Post")
         email = request.form['email'].strip().lower()
         password = request.form['password'].strip()
+
         print(request.form)
-        query = """SELECT id, fname, password FROM customer WHERE email = ?"""
+        query = """SELECT id, fname, password, admin FROM customer WHERE email = ?"""
         con = create_connection(DATABASE)
         cur = con.cursor()
         cur.execute(query, (email,))
@@ -66,6 +70,7 @@ def render_login():
             userid = user_data[0][0]
             firstname = user_data[0][1]
             db_password = user_data[0][2]
+            admin = user_data[0][3]
         except IndexError:
             return redirect("/login?")
 
@@ -75,6 +80,7 @@ def render_login():
         session['email'] = email
         session['userid'] = userid
         session['firstname'] = firstname
+        session['isadmin'] = admin
         print(session)
         return redirect('/')
     return render_template('login.html', logged_in=is_logged_in())
@@ -92,6 +98,7 @@ def render_signup():
         email = request.form.get('email').strip().lower()
         password = request.form.get('password')
         password2 = request.form.get('password2')
+        admin = int(request.form.get('isadmin'))
 
         if password != password2:
             return redirect('/signup?error=Passwords+dont+match')
@@ -103,11 +110,11 @@ def render_signup():
 
         con = create_connection(DATABASE)
 
-        query = "INSERT INTO customer (id, fname, lname, email, password) VALUES(NULL,?,?,?,?)"
+        query = "INSERT INTO customer (id, fname, lname, email, password, admin) VALUES (NULL,?,?,?,?,?)"
 
         cur = con.cursor()
         try:
-            cur.execute(query, (fname, lname, email, hashed_password))
+            cur.execute(query, (fname, lname, email, hashed_password, admin))
         except sqlite3.IntegrityError:
             return redirect('/signup?error=Email+is+already+used')
 
@@ -135,15 +142,49 @@ def is_logged_in():
         return True
 
 
-@app.route('/category/<cat_id>')
+def is_teacher():
+    if session.get("isadmin"):
+        print("teacher")
+        return True
+    else:
+        print("student")
+        return False
+
+
+@app.route('/category/<cat_id>', methods=['GET', 'POST'])
 def render_list(cat_id):
-    return render_template('category.html', categories=categories(), vocab_list=vocab(), cat_id=int(cat_id)
-                           , logged_in=is_logged_in())
+
+        if request.method == "POST":
+            Maori = request.form.get('Maori')
+            English = request.form.get('English')
+            definition = request.form.get('Definition')
+            level = request.form.get('level')
+            con = create_connection(DATABASE)
+
+            query = "INSERT INTO vocab (Maori, English, cat_id, definition, level, image, date) VALUES(?,?,?,?,?, 'no_image.png', date())"
+
+            cur = con.cursor()
+            try:
+                cur.execute(query, (Maori, English, cat_id, definition, level))
+            except sqlite3.IntegrityError:
+                return redirect(f'/category/{cat_id}?error')
+
+            con.commit()
+            con.close()
+        return render_template('category.html', categories=categories(), vocab_list=vocab(), cat_id=int(cat_id)
+                               , logged_in=is_logged_in(), teacher=is_teacher())
+
 
 @app.route('/word/<word_id>')
 def render_word(word_id):
     return render_template('word.html', categories=categories(), vocab_list=vocab(), word_id=int(word_id),
                            logged_in=is_logged_in())
+
+
+@app.route('/delete_word')
+def render_delete():
+    return render_template('delete.html', )
+
 
 if __name__ == '__main__':
     app.run()

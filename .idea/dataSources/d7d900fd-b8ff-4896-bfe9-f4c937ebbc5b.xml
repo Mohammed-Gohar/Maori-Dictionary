@@ -1369,75 +1369,79 @@
       <Position>5</Position>
       <DataType>CHAR(60)|0s</DataType>
     </column>
-    <index id="502" parent="171" name="customer_email_uindex">
+    <column id="502" parent="171" name="admin">
+      <Position>6</Position>
+      <DataType>BOOLEAN|0s</DataType>
+    </column>
+    <index id="503" parent="171" name="customer_email_uindex">
       <ColNames>email</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="503" parent="171" name="customer_pk">
+    <key id="504" parent="171" name="customer_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="504" parent="172" name="type">
+    <column id="505" parent="172" name="type">
       <Position>1</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="505" parent="172" name="name">
+    <column id="506" parent="172" name="name">
       <Position>2</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="506" parent="172" name="tbl_name">
+    <column id="507" parent="172" name="tbl_name">
       <Position>3</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="507" parent="172" name="rootpage">
+    <column id="508" parent="172" name="rootpage">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="508" parent="172" name="sql">
+    <column id="509" parent="172" name="sql">
       <Position>5</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="509" parent="173" name="name">
+    <column id="510" parent="173" name="name">
       <Position>1</Position>
     </column>
-    <column id="510" parent="173" name="seq">
+    <column id="511" parent="173" name="seq">
       <Position>2</Position>
     </column>
-    <column id="511" parent="174" name="id">
+    <column id="512" parent="174" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="512" parent="174" name="Maori">
+    <column id="513" parent="174" name="Maori">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="513" parent="174" name="English">
+    <column id="514" parent="174" name="English">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="514" parent="174" name="cat_id">
+    <column id="515" parent="174" name="cat_id">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
     </column>
-    <column id="515" parent="174" name="definition">
+    <column id="516" parent="174" name="definition">
       <Position>5</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="516" parent="174" name="level">
+    <column id="517" parent="174" name="level">
       <Position>6</Position>
       <DataType>integer|0s</DataType>
     </column>
-    <column id="517" parent="174" name="image">
+    <column id="518" parent="174" name="image">
       <Position>7</Position>
       <DataType>varchar(60)|0s</DataType>
     </column>
-    <column id="518" parent="174" name="date">
+    <column id="519" parent="174" name="date">
       <Position>8</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <key id="519" parent="174" name="vocab_pk">
+    <key id="520" parent="174" name="vocab_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

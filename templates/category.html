@@ -19,5 +19,48 @@
             {% endfor %}
         </tbody>
     </table>
+
+
+
+{% if teacher %}
+    <form class="dataForm" method="post">
+        <div class="form-group">
+            <div class="form-label">Maori Word:</div>
+            <div class="form-element"><input name="Maori" type="text" required></div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">English:</div>
+            <div class="form-element"><input name="English" type="text" required></div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">Definition:</div>
+            <div class="form-element"><textarea name="Definition" type="text" required></textarea></div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">Level:</div>
+            <p>
+            <input type="radio" name="level" value="1">1</input>
+            <input type="radio" name="level" value="2">2</input>
+            <input type="radio" name="level" value="3">3</input>
+            <input type="radio" name="level" value="4">4</input>
+            <input type="radio" name="level" value="5">5</input>
+            <input type="radio" name="level" value="6">6</input>
+            <input type="radio" name="level" value="7">7</input>
+            <input type="radio" name="level" value="8">8</input>
+            <input type="radio" name="level" value="9">9</input>
+            <input type="radio" name="level" value="10">10</input>
+            </p>
+        </div>
+
+        <div class="button-group">
+            <input type="submit" value="Submit">
+        </div>
+
+    </form>
+{% endif %}
+
 {% endblock %}
 
