@@ -161,11 +161,11 @@ def render_list(cat_id):
             level = request.form.get('level')
             con = create_connection(DATABASE)
 
-            query = "INSERT INTO vocab (Maori, English, cat_id, definition, level, image, date) VALUES(?,?,?,?,?, 'no_image.png', date())"
+            query = "INSERT INTO vocab (Maori, English, cat_id, definition, level, image, date) VALUES(?,?,?,?,?,?, date())"
 
             cur = con.cursor()
             try:
-                cur.execute(query, (Maori, English, cat_id, definition, level))
+                cur.execute(query, (Maori, English, cat_id, definition, level, "noimage.png"))
             except sqlite3.IntegrityError:
                 return redirect(f'/category/{cat_id}?error')
 
@@ -178,13 +178,38 @@ def render_list(cat_id):
 @app.route('/word/<word_id>')
 def render_word(word_id):
     return render_template('word.html', categories=categories(), vocab_list=vocab(), word_id=int(word_id),
-                           logged_in=is_logged_in())
+                           logged_in=is_logged_in(), teacher=is_teacher())
 
 
-@app.route('/delete_word')
-def render_delete():
-    return render_template('delete.html', )
+# User can delete a word
+@app.route('/delete_word/<word_id>')
+def render_delete_word(word_id):
+    if not is_logged_in():
+        return redirect('/?error=Not+logged+in')
+    if not is_teacher():
+        return redirect('/?error=A+teacher+is+not+logged+in')
+    return render_template('delete_word.html', categories=categories(), logged_in=is_logged_in(),
+                           teacher=is_teacher(), vocab_list=vocab(), word_id=int(word_id))
 
+
+# Conformation when deleting a word
+@app.route('/confirm_delete_word/<word_id>')
+def render_confirm_delete_word(word_id):
+    if not is_logged_in():
+        return redirect('/?error=Not+logged+in')
+    if not is_teacher():
+        return redirect('/?error=A+teacher+is+not+logged+in')
+
+    print(word_id)
+
+    con = create_connection(DATABASE)
+    query = "DELETE FROM vocab WHERE id = ?"
+    cur = con.cursor()
+    cur.execute(query, (word_id,))
+    con.commit()
+
+    con.close()
+    return redirect('/?The+word+has+been+removed')
 
 if __name__ == '__main__':
     app.run()

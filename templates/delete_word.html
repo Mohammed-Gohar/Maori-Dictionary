@@ -1,6 +1,11 @@
-{% extends"base.html" %}
+{% extends "base.html" %}
 
-{% block pageheading %}
-delete word
+{% block main %}
+    {% if logged_in %}
+        {% if teacher %}
+            <p><a>Are you sure you want to delete the word</a> -
+                <a href="/confirm_delete_word/{{ word_id }}">Yes</a> /
+                <a href="/word/{{ word_id }}">No</a></p>
+        {% endif %}
+    {% endif %}
 {% endblock %}
-

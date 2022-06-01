@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block main %}
+    {% if teacher %}
+        <h3><a href="/delete_word/{{ word_id }}">Delete word</a></h3>
+    {% endif %}
     <table>
         <tr>
             <th>Maori</th>
@@ -13,6 +16,7 @@
          <tbody>
             {% for vocab in vocab_list %}
                 {% if vocab[0] == word_id %}
+                    <h1>{{vocab[1]}}</h1>
                     <tr>
                         <td>{{ vocab[1] }}</td>
                         <td>{{ vocab[2] }}</td>
